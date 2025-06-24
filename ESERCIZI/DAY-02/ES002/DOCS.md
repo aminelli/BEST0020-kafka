@@ -77,12 +77,22 @@ cd opt/kafka/
 bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
 ```
 
-## Step 7 - Creazione Consumer che scoda su topic dedicato alla lettura del file
+## Step 8 - Creazione Consumer che scoda su topic dedicato alla lettura del file
 
 Apriamo un nuovo terminale a livello di os e lanciamo il seguente comando:
 ```shell
 docker exec -it kafka01 /opt/kafka/bin/kafka-console-consumer.sh --topic connect-test --from-beginning --bootstrap-server localhost:9092
 ```
 
+Nota: Per monitorar il file test.txt e test.sink.txt (in separati command)
 
+```shell
+#  Monitoring file sorgente
+docker exec -it kafka01 tail -f /opt/kafka/test.txt
+```
+
+```shell
+#  Monitoring file di sink (destinazione)
+docker exec -it kafka01 tail -f /opt/kafka/test.sink.txt
+```
 
