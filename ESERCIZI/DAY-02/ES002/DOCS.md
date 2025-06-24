@@ -27,6 +27,8 @@ docker exec -it kafka01 /bin/bash
 cd opt/kafka/bin/
 
 # Creazione Topic
+./kafka-topics.sh --create --topic test-corso --bootstrap-server localhost:9092
 
-# Verifichiamo i log del container
+# Verifica Creazione Topic
+./kafka-topics.sh --describe --topic test-corso --bootstrap-server localhost:9092
 ```
