@@ -25,6 +25,6 @@ bin\windows\kafka-console-producer.bat --topic quickstart-events --bootstrap-ser
 REM Aprire un nuovo prompt dei comandi,
 REM Posizionarsi sulla folder principale di Kafka
 REM (Ovvero la folder dove si è scompattati il file zip di kafka)
-REM e lanciare il comando:
+REM e lanciare il comando pre creare il consumer:
 bin\windows\kafka-console-consumer.bat --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
 ``` 
