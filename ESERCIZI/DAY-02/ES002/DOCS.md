@@ -16,3 +16,17 @@ docker run -d --hostname kafka01 --name kafka01 -p 9092:9092 --network net-kafka
 # Verifichiamo i log del container
 docker logs -f kafka01
 ```
+
+## Step 3 - Creazione Topic
+
+```shell
+# Aggangio al container di kafka; viene avviato un nuovo pid che attiva la bash
+docker exec -it kafka01 /bin/bash
+
+# mi sposto nella cartella del container dove risiedono i tools a linea di comando di kafka
+cd opt/kafka/bin/
+
+# Creazione Topic
+
+# Verifichiamo i log del container
+```
