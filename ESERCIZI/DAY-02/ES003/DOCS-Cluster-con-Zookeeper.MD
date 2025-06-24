@@ -17,3 +17,21 @@ docker run -d --hostname broker03 --name broker03 -p 9094:9094 -p 9103:9101 --ne
 docker run -d --hostname kafka-ui --name kafka-ui -p 9088:8080 -e DYNAMIC_CONFIG_ENABLED=true --network net-kafka provectuslabs/kafka-ui
 
 ```
+
+## Step 3 - Creazione Topic e creazione di un producer
+
+```shell
+docker exec -it broker01 /bin/bash
+cd /usr/bin
+kafka-topics --create --topic test-corso --bootstrap-server broker01:29092
+kafka-topics --describe --topic test-corso --bootstrap-server broker01:29092
+kafka-console-producer --topic test-corso --bootstrap-server broker01:29092
+```
+
+## Step 4 - Creazione Consumer
+
+```shell
+docker exec -it broker01 /bin/bash
+cd /usr/bin
+kafka-console-consumer --topic test-corso --from-beginning --bootstrap-server broker01:29092
+```
