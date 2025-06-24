@@ -11,7 +11,7 @@ docker network create net-kafka
 
 ```shell
 # Creazione container
-docker run -d --hostname kafka01 --name kafka01 -p 9092:9092 --newtwork net-kafka apache/kafka:3.9.1
+docker run -d --hostname kafka01 --name kafka01 -p 9092:9092 --network net-kafka apache/kafka:3.9.1
 
 # Verifichiamo i log del container
 docker logs -f kafka01
