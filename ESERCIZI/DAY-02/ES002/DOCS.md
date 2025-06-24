@@ -32,3 +32,17 @@ cd opt/kafka/bin/
 # Verifica Creazione Topic
 ./kafka-topics.sh --describe --topic test-corso --bootstrap-server localhost:9092
 ```
+
+## Step 4 - Creazione Producer
+
+Apriamo un nuovo terminale a livello di os e lanciamo il seguente comando:
+```shell
+docker exec -it kafka01 /opt/kafka/bin/kafka-console-producer.sh --topic test-corso --bootstrap-server localhost:9092
+```
+
+## Step 5 - Creazione Consumer
+
+Apriamo un nuovo terminale a livello di os e lanciamo il seguente comando:
+```shell
+docker exec -it kafka01 /opt/kafka/bin/kafka-console-consumer.sh --topic test-corso --from-beginning --bootstrap-server localhost:9092
+``` 
