@@ -36,7 +36,7 @@ services:
     container_name: broker03
     ports:
       - 9094:9094
-      - 9102:9101
+      - 9103:9101
     env_file:
       - .env.broker03
     healthcheck:
