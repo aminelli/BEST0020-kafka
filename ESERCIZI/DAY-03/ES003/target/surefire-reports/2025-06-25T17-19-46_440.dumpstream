@@ -1,5 +1,0 @@
-# Created at 2025-06-25T17:19:46.677
-Boot Manifest-JAR contains absolute paths in classpath 'D:\Corsi\Library\Code\Products\Kafka\corso\BEST0020-kafka\ESERCIZI\DAY-03\ES003\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-
