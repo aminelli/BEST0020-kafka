@@ -3,9 +3,7 @@ package com.corso.kafka.console;
 import java.io.IOException;
 import java.util.Scanner;
 
-import com.corso.kafka.producers.ProducerSyncAckAll;
-import com.corso.kafka.producers.ProducerSyncAckOne;
-import com.corso.kafka.producers.ProducerSyncFireAndForget;
+import com.corso.kafka.consumers.ConsumerKafka;
 
 public class MenuConsole {
     
@@ -35,9 +33,9 @@ public class MenuConsole {
         System.out.println("\n" + "=".repeat(40));
         System.out.println("MENU PRINCIPALE");
         System.out.println("=".repeat(40));
-        System.out.println("1. Producers sincrono Acks 0");
-        System.out.println("2. Producers sincrono Acks 1");
-        System.out.println("3. Producers sincrono Acks All");
+        System.out.println("1. Consumer FIRE_AND_FORGET");
+        System.out.println("2. Consumer ACK_1");
+        System.out.println("3. Consumer ACK_ALL");
         System.out.println("0. Esci");
         System.out.println("=".repeat(40));
         System.out.print("Scegli la voce di menu: ");
@@ -59,13 +57,13 @@ public class MenuConsole {
 
         switch (menuIndex) {
             case 1:
-                new ProducerSyncFireAndForget().sendMessages( "FIRE_AND_FORGET", 1000000);
+                new ConsumerKafka().receiveMessages( "FIRE_AND_FORGET");
                 break;
             case 2:
-                new ProducerSyncAckOne().sendMessages( "ACK_1", 5000);
+                new ConsumerKafka().receiveMessages( "ACK_1");
                 break;
             case 3:
-                new ProducerSyncAckAll().sendMessages( "ACK_ALL", 5000);
+                new ConsumerKafka().receiveMessages( "ACK_ALL");
                 break;
             case 0:
                 return false;

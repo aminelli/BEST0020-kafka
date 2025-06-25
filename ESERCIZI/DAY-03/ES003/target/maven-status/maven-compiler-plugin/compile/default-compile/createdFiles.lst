@@ -1,0 +1,4 @@
+com\corso\kafka\App.class
+com\corso\kafka\consumers\ConsumerKafka.class
+com\corso\kafka\consumers\ConsumerBase.class
+com\corso\kafka\console\MenuConsole.class
