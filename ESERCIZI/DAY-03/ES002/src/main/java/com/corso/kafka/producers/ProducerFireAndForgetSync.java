@@ -51,7 +51,7 @@ public class ProducerFireAndForgetSync {
                 producer.send(record);
                 System.out.println("Inviato MSG nr " + count);
             } catch (Exception ex) {
-                 System.out.println("Errre su Invio MSG nr " + count);
+                 System.out.println("Errore su Invio MSG nr " + count);
             }
         }
 
