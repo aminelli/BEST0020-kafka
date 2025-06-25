@@ -3,14 +3,17 @@ package com.corso.kafka.producers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.concurrent.Future;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
-public class ProducerFireAndForgetSync {
-
-    public void sendMessages() {
+// Ack 1
+public class ProducerSyncAckOne extends ProducerBase {
+    
+    public void sendMessages(String topicName, int maxMessages) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Properties props = new Properties();
@@ -25,7 +28,7 @@ public class ProducerFireAndForgetSync {
         props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "gzip");
 
         // Tipo Acks
-        props.put(ProducerConfig.ACKS_CONFIG, "0");
+        props.put(ProducerConfig.ACKS_CONFIG, "1");
 
         // Namespaces delle CLASSI da utilizzare per la serializzazione della KEY e del
         // VALORE
@@ -37,18 +40,22 @@ public class ProducerFireAndForgetSync {
 
         ProducerRecord<String, String> record = null;
 
-        String topicName = "FIRE_AND_FORGET";
-
+        
         String startProcess = formatter.format(new Date());
 
-        for (int count = 0; count < 100000; count++) {
+        for (int count = 0; count < maxMessages; count++) {
             String key = "K" + count;
             String value = "Ciao Msg nr " + count;
             record = new ProducerRecord<>(topicName, key, value);
             try {
                 String headInfo = "MSG" + count;
                 record.headers().add("INFO-MSG", headInfo.getBytes());
-                producer.send(record);
+         
+                Future<RecordMetadata> future = producer.send(record);
+         
+                RecordMetadata metadata = future.get();
+                printMetadata(metadata);
+         
                 System.out.println("Inviato MSG nr " + count);
             } catch (Exception ex) {
                  System.out.println("Errore su Invio MSG nr " + count);

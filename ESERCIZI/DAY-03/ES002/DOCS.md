@@ -14,3 +14,7 @@ Per chi ha problemi con la java_home:
 ```shell
 SET PATH=%JAVA_HOME%\bin:%PATH%;
 ```
+
+## Link Utili
+
+- Lista sdk: https://developer.confluent.io/kafka-languages-and-tools/

@@ -1,8 +1,10 @@
 package com.corso.kafka.console;
 
+import java.io.IOException;
 import java.util.Scanner;
 
-import com.corso.kafka.producers.ProducerFireAndForgetSync;
+import com.corso.kafka.producers.ProducerSyncAckOne;
+import com.corso.kafka.producers.ProducerSyncFireAndForget;
 
 public class MenuConsole {
     
@@ -21,6 +23,7 @@ public class MenuConsole {
             drawMenu();
             int menuIndex = loadMenu();
             displayMenu = executeAction(menuIndex);
+            clearConsole();
         }
 
         System.out.print("Ciao Torna Presto... ");
@@ -32,6 +35,7 @@ public class MenuConsole {
         System.out.println("MENU PRINCIPALE");
         System.out.println("=".repeat(40));
         System.out.println("1. Crea Producers sincrono Acks 0");
+        System.out.println("2. Crea Producers sincrono Acks 1");
         System.out.println("0. Esci");
         System.out.println("=".repeat(40));
         System.out.print("Scegli la voce di menu: ");
@@ -53,7 +57,10 @@ public class MenuConsole {
 
         switch (menuIndex) {
             case 1:
-                new ProducerFireAndForgetSync().sendMessages();
+                new ProducerSyncFireAndForget().sendMessages( "FIRE_AND_FORGET", 100000);
+                break;
+            case 2:
+                new ProducerSyncAckOne().sendMessages( "ACK_1", 100000);
                 break;
             case 0:
                 return false;
@@ -66,5 +73,31 @@ public class MenuConsole {
         return true;
     }    
 
+
+        // Metodo per pulire la console - funziona su Windows, Linux e Mac
+    private void clearConsole() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            
+            if (os.contains("win")) {
+                // Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Linux/Mac/Unix
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (IOException | InterruptedException e) {
+            // Se il comando non funziona, usa il metodo alternativo
+            clearConsoleAlternative();
+        }
+    }
+
+        // Metodo alternativo per pulire la console (stampa righe vuote)
+    private void clearConsoleAlternative() {
+        // Stampa 50 righe vuote per simulare la pulizia
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
+    }
 
 }
