@@ -89,6 +89,7 @@
     </dependencies>
 
     <build>
+        
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
@@ -132,5 +133,21 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        
+        
+        </plugins>
+
     </build>
 </project>
