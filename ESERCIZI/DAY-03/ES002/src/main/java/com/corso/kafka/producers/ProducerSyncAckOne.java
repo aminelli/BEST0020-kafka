@@ -54,9 +54,9 @@ public class ProducerSyncAckOne extends ProducerBase {
                 Future<RecordMetadata> future = producer.send(record);
          
                 RecordMetadata metadata = future.get();
-                printMetadata(metadata);
+                printMetadata(metadata, count);
          
-                System.out.println("Inviato MSG nr " + count);
+                //System.out.println("Inviato MSG nr " + count);
             } catch (Exception ex) {
                  System.out.println("Errore su Invio MSG nr " + count);
             }

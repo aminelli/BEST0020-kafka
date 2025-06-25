@@ -57,10 +57,10 @@ public class MenuConsole {
 
         switch (menuIndex) {
             case 1:
-                new ProducerSyncFireAndForget().sendMessages( "FIRE_AND_FORGET", 100000);
+                new ProducerSyncFireAndForget().sendMessages( "FIRE_AND_FORGET", 5000);
                 break;
             case 2:
-                new ProducerSyncAckOne().sendMessages( "ACK_1", 100000);
+                new ProducerSyncAckOne().sendMessages( "ACK_1", 5000);
                 break;
             case 0:
                 return false;
