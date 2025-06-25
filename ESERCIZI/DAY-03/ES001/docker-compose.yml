@@ -1,0 +1,58 @@
+---
+
+services:
+
+  broker01:
+    image: confluentinc/cp-server:7.9.0
+    hostname: broker01
+    container_name: broker01
+    ports:
+      - 9092:9092
+      - 9101:9101
+    env_file:
+      - .env.broker01
+    healthcheck:
+      test: nc -z localhost 9092 || exit 1
+      interval: 20s
+      retries: 10
+   
+  broker02:
+    image: confluentinc/cp-server:7.9.0
+    hostname: broker02
+    container_name: broker02
+    ports:
+      - 9093:9093
+      - 9102:9101
+    env_file:
+      - .env.broker02
+    healthcheck:
+      test: nc -z localhost 9093 || exit 1
+      interval: 20s
+      retries: 10
+
+  broker03:
+    image: confluentinc/cp-server:7.9.0
+    hostname: broker03
+    container_name: broker03
+    ports:
+      - 9094:9094
+      - 9102:9101
+    env_file:
+      - .env.broker03
+    healthcheck:
+      test: nc -z localhost 9094 || exit 1
+      interval: 20s
+      retries: 10
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    hostname: kafka-ui
+    container_name: kafka-ui
+    ports:
+      - 9088:8080
+    environment:
+      - DYNAMIC_CONFIG_ENABLED=true
+    depends_on:
+      - broker01
+      - broker02
+      - broker03
