@@ -3,6 +3,7 @@ package com.corso.kafka.console;
 import java.io.IOException;
 import java.util.Scanner;
 
+import com.corso.kafka.producers.ProducerSyncAckAll;
 import com.corso.kafka.producers.ProducerSyncAckOne;
 import com.corso.kafka.producers.ProducerSyncFireAndForget;
 
@@ -23,7 +24,6 @@ public class MenuConsole {
             drawMenu();
             int menuIndex = loadMenu();
             displayMenu = executeAction(menuIndex);
-            clearConsole();
         }
 
         System.out.print("Ciao Torna Presto... ");
@@ -31,11 +31,13 @@ public class MenuConsole {
     }
 
     private void drawMenu() {
+        clearConsole();
         System.out.println("\n" + "=".repeat(40));
         System.out.println("MENU PRINCIPALE");
         System.out.println("=".repeat(40));
-        System.out.println("1. Crea Producers sincrono Acks 0");
-        System.out.println("2. Crea Producers sincrono Acks 1");
+        System.out.println("1. Producers sincrono Acks 0");
+        System.out.println("2. Producers sincrono Acks 1");
+        System.out.println("3. Producers sincrono Acks All");
         System.out.println("0. Esci");
         System.out.println("=".repeat(40));
         System.out.print("Scegli la voce di menu: ");
@@ -61,6 +63,9 @@ public class MenuConsole {
                 break;
             case 2:
                 new ProducerSyncAckOne().sendMessages( "ACK_1", 5000);
+                break;
+            case 3:
+                new ProducerSyncAckAll().sendMessages( "ACK_ALL", 5000);
                 break;
             case 0:
                 return false;
