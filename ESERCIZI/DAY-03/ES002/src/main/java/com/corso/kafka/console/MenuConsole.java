@@ -2,6 +2,8 @@ package com.corso.kafka.console;
 
 import java.util.Scanner;
 
+import com.corso.kafka.producers.ProducerFireAndForgetSync;
+
 public class MenuConsole {
     
     private Scanner scanner;
@@ -51,7 +53,7 @@ public class MenuConsole {
 
         switch (menuIndex) {
             case 1:
-                
+                new ProducerFireAndForgetSync().sendMessages();
                 break;
             case 0:
                 return false;
