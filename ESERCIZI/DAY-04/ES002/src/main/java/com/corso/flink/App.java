@@ -5,9 +5,12 @@ import java.util.Map;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringEncoder;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.file.sink.FileSink;
 import org.apache.flink.connector.file.src.FileSource;
 import org.apache.flink.connector.file.src.reader.TextLineInputFormat;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -60,7 +63,7 @@ public class App {
         ObjectMapper mapper = new ObjectMapper();
 
        
-        var jsonOutput = csvInput
+        var dataStream = csvInput
             .filter(line -> !line.startsWith("movie")) // skip header
             .map(line -> {
                 //String[] fields = line.split(",");
@@ -79,7 +82,7 @@ public class App {
         
         // Sink    
 
-        FileSink<String> sink = FileSink
+        FileSink<String> fileSink = FileSink
             .forRowFormat(
                 new Path(basePathJson),
                 new SimpleStringEncoder<String>("UTF-8")
@@ -94,8 +97,24 @@ public class App {
             .build();
 
         
-        jsonOutput.sinkTo(sink);
+        //jsonOutput.sinkTo(sink);
+        dataStream.sinkTo(fileSink);
         
+        KafkaSink<String> kafkaSink = KafkaSink.<String>builder()
+            .setBootstrapServers("10.0.0.43:9092")
+            .setRecordSerializer(
+                KafkaRecordSerializationSchema.builder()
+                    .setTopic("MOVIES")
+                    .setValueSerializationSchema(new SimpleStringSchema())
+                    .build()
+            )
+            .build();
+
+        //DataStream<String> kafkaStream = dataStream
+        //    .map(json -> json);
+        
+        dataStream.sinkTo(kafkaSink);
+
         env.execute("CSV 2 JON Source/Sink");
 
     }
