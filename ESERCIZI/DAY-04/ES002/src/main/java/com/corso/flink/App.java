@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringEncoder;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.base.DeliveryGuarantee;
 import org.apache.flink.connector.file.sink.FileSink;
 import org.apache.flink.connector.file.src.FileSource;
 import org.apache.flink.connector.file.src.reader.TextLineInputFormat;
@@ -30,17 +31,17 @@ public class App {
         
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         
-        /* */
+        /* 
         String basePath = "D:\\Corsi\\Library\\Code\\Products\\Kafka\\corso\\BEST0020-kafka\\ESERCIZI\\DAY-04\\ES002\\datasets\\";    
         String basePathCsv = basePath + "csv\\";    
         String basePathJson = basePath + "json\\";  
-        
+        */
 
-        /*
+        /**/
         String basePath = "/datasets/";    
         String basePathCsv = basePath + "csv/";    
         String basePathJson = basePath + "json/";  
-        */
+        
 
         String inputFile = "moviesDB.csv";
         String outputFile = "moviesDB";
@@ -101,15 +102,21 @@ public class App {
         //jsonOutput.sinkTo(sink);
         dataStream.sinkTo(fileSink);
         
+        //String brokers = "10.0.0.43:9092,10.0.0.43:9093,10.0.0.43:9094";
+        //String brokers = "broker01:29092,broker02:29093,broker03:29094";
+        String brokers = "172.20.0.5:9092,172.20.0.5:9093,172.20.0.5:9094";
         
+
         KafkaSink<String> kafkaSink = KafkaSink.<String>builder()
-            .setBootstrapServers("10.0.0.43:9092,10.0.0.43:9093,10.0.0.43:9094")
+            .setBootstrapServers(brokers)
             .setRecordSerializer(
                 KafkaRecordSerializationSchema.builder()
                     .setTopic("MOVIES")
                     .setValueSerializationSchema(new SimpleStringSchema())
                     .build()
             )
+            .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
+            .setTransactionalIdPrefix("flink-movies-")
             .build();
              
           
