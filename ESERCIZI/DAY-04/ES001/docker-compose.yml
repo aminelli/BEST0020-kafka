@@ -1,0 +1,41 @@
+---
+
+services:
+
+  jobmanager:
+    image: flink
+    hostname: jobmanager
+    container_name: jobmanager
+    command: ["jobmanager"]
+    ports:
+      - 8081:8081 # Flink WebUI
+    networks:
+      - net-flink
+    env_file:
+      - .env.flink
+
+  taskmanager01:
+    image: flink
+    hostname: taskmanager01
+    container_name: taskmanager01
+    command:  ["taskmanager"]
+    networks:
+      - net-flink
+    env_file:
+      - .env.flink
+
+  taskmanager02:
+    image: flink
+    hostname: taskmanager02
+    container_name: taskmanager02
+    command:  ["taskmanager"]
+    networks:
+      - net-flink
+    env_file:
+      - .env.flink
+
+networks:
+  net-flink:
+    driver: bridge
+
+
