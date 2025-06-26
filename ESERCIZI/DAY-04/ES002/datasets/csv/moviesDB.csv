@@ -7463,7 +7463,7 @@ movie,title,genres,year,Rating,Rotton Tomato
 73664,Dragon Hunters (Chasseurs de dragons),Adventure|Animation|Children,2008,8,88
 73808,"Chaser, The (Chugyeogja)",Crime|Drama|Thriller,2008,2,51
 74327,"First Day of the Rest of Your Life, The (Le premier jour du reste de ta vie)",Comedy|Drama,2008,10,83
-74486,$9.99 ,Animation,2008,4,100
+74486,"$9.99 ",Animation,2008,4,100
 74649,Shades of Ray,Comedy|Drama|Romance,2007,9,71
 75983,North Face (Nordwand),Adventure|Drama,2008,3,95
 77810,Diary of a Nymphomaniac (Diario de una Ninfómana),Drama,2008,3,88
@@ -9124,4 +9124,4 @@ movie,title,genres,year,Rating,Rotton Tomato
 151307,The Lovers and the,(no genres listed),1929,8,97
 162376,Stranger,Drama,1930,4,76
 164979,"Women of '69, U",Documentary,1931,5,68
-16492222,"Tony Minels",Documentary,1931,5,68
+16497919,"Tony Minels",Documentary,1931,5,68

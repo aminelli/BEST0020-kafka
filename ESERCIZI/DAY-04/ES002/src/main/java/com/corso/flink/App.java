@@ -30,16 +30,17 @@ public class App {
         
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         
-        /*
+        /* */
         String basePath = "D:\\Corsi\\Library\\Code\\Products\\Kafka\\corso\\BEST0020-kafka\\ESERCIZI\\DAY-04\\ES002\\datasets\\";    
         String basePathCsv = basePath + "csv\\";    
         String basePathJson = basePath + "json\\";  
-         */
+        
 
+        /*
         String basePath = "/datasets/";    
         String basePathCsv = basePath + "csv/";    
         String basePathJson = basePath + "json/";  
-        
+        */
 
         String inputFile = "moviesDB.csv";
         String outputFile = "moviesDB";
@@ -74,8 +75,8 @@ public class App {
                 jsonMap.put("title",        fields[1].trim());
                 jsonMap.put("genres",       fields[2].trim());
                 jsonMap.put("year",         Integer.parseInt(fields[3]));
-                jsonMap.put("Rating",Integer.parseInt(fields[4]));
-                jsonMap.put("Rotton Tomato",Integer.parseInt(fields[5]));
+                jsonMap.put("Rating",        Integer.parseInt(fields[4]));
+                jsonMap.put("Rotton Tomato", Integer.parseInt(fields[5]));
                 return mapper.writeValueAsString(jsonMap);
             });
 
@@ -100,8 +101,9 @@ public class App {
         //jsonOutput.sinkTo(sink);
         dataStream.sinkTo(fileSink);
         
+        
         KafkaSink<String> kafkaSink = KafkaSink.<String>builder()
-            .setBootstrapServers("10.0.0.43:9092")
+            .setBootstrapServers("10.0.0.43:9092,10.0.0.43:9093,10.0.0.43:9094")
             .setRecordSerializer(
                 KafkaRecordSerializationSchema.builder()
                     .setTopic("MOVIES")
@@ -109,10 +111,8 @@ public class App {
                     .build()
             )
             .build();
-
-        //DataStream<String> kafkaStream = dataStream
-        //    .map(json -> json);
-        
+             
+          
         dataStream.sinkTo(kafkaSink);
 
         env.execute("CSV 2 JON Source/Sink");

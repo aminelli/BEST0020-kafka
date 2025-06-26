@@ -37,12 +37,23 @@
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-connector-kafka -->
+         
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
             <version>3.4.0-1.20</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-         
+          
          
         <!-- Flink Core FS dependencies (e.g. for local file writing) -->
         <dependency>
