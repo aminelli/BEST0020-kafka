@@ -13,6 +13,8 @@ services:
       - net-flink
     env_file:
       - .env.flink
+    volumes:
+      - ./datasets:/datasets
 
   taskmanager01:
     image: flink
@@ -23,6 +25,10 @@ services:
       - net-flink
     env_file:
       - .env.flink
+    depends_on:
+      - jobmanager
+    volumes:
+      - ./datasets:/datasets
 
   taskmanager02:
     image: flink
@@ -33,6 +39,10 @@ services:
       - net-flink
     env_file:
       - .env.flink
+    depends_on:
+      - jobmanager
+    volumes:
+      - ./datasets:/datasets
 
 networks:
   net-flink:
