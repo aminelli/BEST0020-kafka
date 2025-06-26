@@ -8,3 +8,4 @@ BEST0020-kafka
 | Desc               | Url                                                                              |
 | ------------------ | -------------------------------------------------------------------------------- |
 | Kafka Requirements | https://docs.confluent.io/platform/current/installation/system-requirements.html |
+ 
