@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.corso.kafka</groupId>
+    <groupId>com.corso.flink</groupId>
     <artifactId>flink-csv2json</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -73,6 +73,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${lib.commons-compress}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.9</version>
         </dependency>
 
         <dependency>
@@ -159,7 +165,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.corso.kafka.App</mainClass>
+                                    <mainClass>com.corso.flink.App</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
