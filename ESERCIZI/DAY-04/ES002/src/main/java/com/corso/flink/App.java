@@ -87,7 +87,7 @@ public class App {
             .withRollingPolicy(OnCheckpointRollingPolicy.build())
             .withOutputFileConfig(
                 OutputFileConfig.builder()
-                .withPartPrefix("part_")
+                .withPartPrefix("part")
                 .withPartSuffix(".json")
                 .build()                
             )
