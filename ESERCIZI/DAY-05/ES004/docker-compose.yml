@@ -1,0 +1,208 @@
+---
+services:
+
+  broker01:
+    image: confluentinc/cp-server:7.9.0
+    hostname: broker01
+    container_name: broker01
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+    env_file:
+      - ./environment/.env.broker01
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - vol-broker01-data:/var/lib/kafka/data
+      - vol-broker01-secrets:/etc/kafka/secrets
+
+  broker02:
+    image: confluentinc/cp-server:7.9.0
+    hostname: broker02
+    container_name: broker02
+    ports:
+      - "9093:9092"
+      - "9102:9101"
+    env_file:
+      - ./environment/.env.broker02
+    depends_on:
+      - broker01
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - vol-broker02-data:/var/lib/kafka/data
+      - vol-broker02-secrets:/etc/kafka/secrets
+
+
+  broker03:
+    image: confluentinc/cp-server:7.9.0
+    hostname: broker03
+    container_name: broker03
+    ports:
+      - "9094:9092"
+      - "9103:9101"
+    env_file:
+      - ./environment/.env.broker03
+    depends_on:
+      - broker01
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - vol-broker03-data:/var/lib/kafka/data
+      - vol-broker03-secrets:/etc/kafka/secrets
+
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.9.0
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - broker01
+      - broker02
+      - broker03
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./environment/.env.schema-registry
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - vol-schema-registry-secrets:/etc/schema-registry/secrets
+
+
+#  ksqldb-server:
+#    image: confluentinc/cp-ksqldb-server:7.9.0
+#    hostname: ksqldb-server
+#    container_name: ksqldb-server
+#    depends_on:
+#      - broker01
+#      - broker02
+#      - broker03
+#    ports:
+#      - "8088:8088"
+#    env_file:
+#      - ./environment/.env.ksqldb-server
+#    networks:
+#      - net-kafka-cluster
+#  
+#
+#  ksqldb-cli:
+#    image: confluentinc/cp-ksqldb-cli:7.9.0
+#    container_name: ksqldb-cli
+#    depends_on:
+#      - broker01
+#      - broker02
+#      - broker03
+#      - ksqldb-server
+#    entrypoint: /bin/sh
+#    tty: true
+#    networks:
+#      - net-kafka-cluster
+
+#  rest-proxy:
+#    image: confluentinc/cp-kafka-rest:7.9.0
+#    depends_on:
+#      - broker01
+#      - broker02
+#      - broker03
+#      - schema-registry
+#    ports:
+#      - 8082:8082
+#    hostname: rest-proxy
+#    container_name: rest-proxy
+#    env_file:
+#      - ./environment/.env.rest-proxy
+#    networks:
+#      - net-kafka-cluster
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:7.9.0
+    hostname: control-center
+    container_name: control-center
+    depends_on:
+      - broker01
+      - broker02
+      - broker03
+      - schema-registry
+      #- ksqldb-server
+    ports:
+      - "9021:9021"
+    env_file:
+      - ./environment/.env.control-center
+    networks:
+      - net-kafka-cluster
+
+  spark-master:
+    image: bitnami/spark
+    hostname: spark-master
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_HOST=spark-master
+    ports:
+      - 9080:8080 # Web UI del master
+      - 7077:7077 # Pora di comunicazione verso spark
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - ./apps:/apps
+
+  spark-worker-01:
+    image: bitnami/spark
+    hostname: spark-worker-01
+    container_name: spark-worker-01
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    ports:
+      - 8082:8081 # Web UI del master
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - ./apps:/apps
+
+  
+  spark-worker-02:
+    image: bitnami/spark
+    hostname: spark-worker-02
+    container_name: spark-worker-02
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    ports:
+      - 8083:8081 # Web UI del master
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - ./apps:/apps
+
+
+  jupiter:
+    image: quay.io/jupyter/pyspark-notebook
+    hostname: jupiter
+    container_name: jupiter
+    ports:
+      - 8888:8888
+      - 4040:4040
+    environment:
+      - TINI_SUBREAPER=true  # equivalente a -e TINI_SUBREAPER=true
+    networks:
+      - net-kafka-cluster
+    volumes:
+      - ./scripts:/home/jovyan
+    
+
+volumes:
+  vol-broker01-data:
+  vol-broker02-data:
+  vol-broker03-data:
+
+  vol-broker01-secrets:
+  vol-broker02-secrets:
+  vol-broker03-secrets:
+
+  vol-schema-registry-secrets:
+
+networks:  
+  net-kafka-cluster:
+    driver: bridge
