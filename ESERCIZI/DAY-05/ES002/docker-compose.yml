@@ -1,0 +1,57 @@
+---
+
+services:
+
+  spark-master:
+    image: bitnami/spark
+    hostname: spark-master
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_HOST=spark-master
+    ports:
+      - 9080:8080 # Web UI del master
+      - 7077:7077 # Pora di comunicazione verso spark
+    networks:
+      - net-corso-spark
+
+  spark-worker-01:
+    image: bitnami/spark
+    hostname: spark-worker-01
+    container_name: spark-worker-01
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    ports:
+      - 8081:8081 # Web UI del master
+    networks:
+      - net-corso-spark
+  
+  spark-worker-02:
+    image: bitnami/spark
+    hostname: spark-worker-02
+    container_name: spark-worker-02
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    ports:
+      - 8082:8081 # Web UI del master
+    networks:
+      - net-corso-spark
+
+  jupiter:
+    image: quay.io/jupyter/pyspark-notebook
+    hostname: jupiter
+    container_name: jupiter
+    ports:
+      - 8888:8888
+    environment:
+      - TINI_SUBREAPER=true  # equivalente a -e TINI_SUBREAPER=true
+    networks:
+      - net-corso-spark
+    volumes:
+      - ./scripts:/home/jovyan
+
+networks:
+  net-corso-spark:
+    driver: bridge
